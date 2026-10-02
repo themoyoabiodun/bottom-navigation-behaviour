@@ -1,8 +1,6 @@
 import SwiftUI
 import FloatingNavKit
 
-enum Tab: Hashable { case home, add, stats }
-
 @main
 struct ExampleApp: App {
     var body: some Scene {
@@ -11,8 +9,6 @@ struct ExampleApp: App {
 }
 
 struct ContentView: View {
-    @State private var tab: Tab = .home
-
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 12) {
@@ -25,13 +21,11 @@ struct ContentView: View {
             }
             .padding()
         }
-        .floatingNavBar(
-            selection: $tab,
-            items: [
-                .init(id: Tab.home, systemImage: "house.fill"),
-                .init(id: Tab.add, systemImage: "plus.circle.fill"),
-                .init(id: Tab.stats, systemImage: "chart.bar.fill")
-            ]
-        )
+        .floatingNav {
+            // Any view works here. FloatingNavKit only adds the scroll behavior.
+            Capsule()
+                .fill(Color.black)
+                .frame(width: 220, height: 64)
+        }
     }
 }

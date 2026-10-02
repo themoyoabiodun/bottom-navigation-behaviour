@@ -1,60 +1,57 @@
 # FloatingNavKit
 
-A floating bottom navigation bar for SwiftUI: a sliding selection highlight, a haptic tick on
-change, and a bar that shrinks while you scroll and eases back to full size once you stop.
+One behavior for SwiftUI, nothing else: **a bottom nav that shrinks while you scroll and returns to its default size shortly after you stop.**
+
+It doesn't ship icons, items, selection state or styling. Bring any view you like.
+
+| State | Nav size |
+|---|---|
+| Scrolling | 80% |
+| Default (0.8s after scrolling stops) | 100% |
 
 ## Install
 
-Swift Package Manager: add this repository's URL, product `FloatingNavKit`. Requires iOS 17+.
+Swift Package Manager, iOS 17+:
+
+```swift
+.package(url: "<your-repo-url>/FloatingNavKit", from: "0.1.0")
+```
 
 ## Use
 
-Add one modifier to your `ScrollView` (or `List`):
+Apply `floatingNav` to the `ScrollView` (or `List`) and pass your own nav view:
 
 ```swift
 import FloatingNavKit
 
-enum Tab: Hashable { case home, add, stats }
-
-struct Screen: View {
-    @State private var tab: Tab = .home
-
-    var body: some View {
-        ScrollView { /* your content */ }
-            .floatingNavBar(
-                selection: $tab,
-                items: [
-                    .init(id: Tab.home, systemImage: "house.fill"),
-                    .init(id: Tab.add, systemImage: "plus.circle.fill"),
-                    .init(id: Tab.stats, assetName: "ChartIcon")
-                ]
-            )
-    }
+ScrollView {
+    // your content
+}
+.floatingNav {
+    MyTabBar()          // any View
 }
 ```
 
-Items accept an SF Symbol name, an asset-catalog name, or any `Image`. Icons are tinted, so
-use single-color template-friendly artwork.
-
-## Customize
+## Tune the behavior
 
 ```swift
-var style = FloatingNavStyle()
-style.shrinkScale = 0.8       // scale while scrolling
-style.restoreDelay = 0.8      // seconds after scrolling stops
-style.selectedColor = .white
-style.unselectedColor = .gray
-style.backgroundColor = .black
-style.indicatorColor = .white.opacity(0.15)
-style.hapticsEnabled = true
+var behavior = FloatingNavBehavior()
+behavior.shrinkScale = 0.8      // size while scrolling
+behavior.restoreDelay = 0.8     // seconds to wait before returning to default
+behavior.animation = .spring(response: 0.35, dampingFraction: 0.75)
+behavior.bottomPadding = 8
+
+ScrollView { ... }
+    .floatingNav(behavior: behavior) { MyTabBar() }
 ```
 
-Pass it with `.floatingNavBar(selection:items:style:)`. To place the bar yourself without the
-scroll behavior, use `FloatingNavBar(selection:items:style:)` directly.
+## How it works
 
-## Notes
+- iOS 18+: `onScrollPhaseChange`. Any phase other than `.idle` (dragging, momentum) counts as scrolling.
+- iOS 17: falls back to touch tracking, which can't see momentum after the finger lifts, so the nav may return to default slightly early.
+- The nav sits in a bottom `safeAreaInset`, scaled from its bottom edge.
+- Each new scroll cancels the pending restore, so the nav never flickers between flicks.
 
-- On iOS 18+ the shrink follows real scroll phases, including momentum scrolling.
-- On iOS 17 it falls back to touch tracking, so the bar restores when your finger lifts rather
-  than when momentum ends.
-- `Example/` is a small app using the package. Generate its project with `xcodegen generate`.
+## Example
+
+`Example/` is a small app with a placeholder nav. Run `xcodegen generate` inside it, then open the project.
