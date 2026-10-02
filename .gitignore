@@ -4,3 +4,11 @@
 xcuserdata/
 DerivedData/
 Example/*.xcodeproj
+
+# Android
+android/.gradle/
+android/build/
+android/**/build/
+android/local.properties
+.idea/
+*.iml

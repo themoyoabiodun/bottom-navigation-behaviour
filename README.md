@@ -1,5 +1,7 @@
 # FloatingNavKit
 
+Available for **SwiftUI** (root package) and **Jetpack Compose** (`android/`).
+
 One behavior for SwiftUI, nothing else: **a bottom nav that shrinks while you scroll and returns to its default size shortly after you stop.**
 
 It ships a placeholder icon bar so you can see the behavior immediately, but the bar is not the point. Bring any view you like.
@@ -62,3 +64,22 @@ ScrollView { ... }
 ## Example
 
 `Example/` is a small app with a placeholder nav. Run `xcodegen generate` inside it, then open the project.
+
+## Android (Jetpack Compose)
+
+> The Compose version has not been compiled or run yet. It was written without an Android toolchain available, so expect to fix small build issues on first open in Android Studio.
+
+The `android/` folder is a Gradle project with a `floatingnav` library module and a `sample` app. Open `android/` in Android Studio and let it sync.
+
+```kotlin
+FloatingNavLayout { contentPadding ->      // placeholder icon nav
+    LazyColumn(contentPadding = PaddingValues(bottom = contentPadding.calculateBottomPadding())) { ... }
+}
+
+FloatingNavLayout(
+    behavior = FloatingNavBehavior(shrinkScale = 0.8f, restoreDelayMillis = 800),
+    nav = { MyBottomBar() },               // any composable
+) { contentPadding -> ... }
+```
+
+It listens through `NestedScrollConnection`, so it works with any scrollable inside (`LazyColumn`, `verticalScroll`, ...). The nav shrinks on the first scroll delta (finger or fling) and the restore delay starts when the fling ends. `contentPadding` is the nav's height, so the last items stay clear of it.
