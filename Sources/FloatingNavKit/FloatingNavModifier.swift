@@ -14,6 +14,13 @@ public extension View {
     }
 }
 
+public extension View {
+    /// Same behavior with the placeholder icon nav. Handy for trying it out.
+    func floatingNav(behavior: FloatingNavBehavior = .default) -> some View {
+        floatingNav(behavior: behavior) { FloatingNavPlaceholder() }
+    }
+}
+
 struct FloatingNavModifier<Nav: View>: ViewModifier {
     let behavior: FloatingNavBehavior
     let nav: Nav

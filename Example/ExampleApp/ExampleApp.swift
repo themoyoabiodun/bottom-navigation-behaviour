@@ -21,11 +21,6 @@ struct ContentView: View {
             }
             .padding()
         }
-        .floatingNav {
-            // Any view works here. FloatingNavKit only adds the scroll behavior.
-            Capsule()
-                .fill(Color.black)
-                .frame(width: 220, height: 64)
-        }
+        .floatingNav() // placeholder icons; pass a closure to use your own nav
     }
 }

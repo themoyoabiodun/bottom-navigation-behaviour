@@ -2,7 +2,7 @@
 
 One behavior for SwiftUI, nothing else: **a bottom nav that shrinks while you scroll and returns to its default size shortly after you stop.**
 
-It doesn't ship icons, items, selection state or styling. Bring any view you like.
+It ships a placeholder icon bar so you can see the behavior immediately, but the bar is not the point. Bring any view you like.
 
 | State | Nav size |
 |---|---|
@@ -19,7 +19,14 @@ Swift Package Manager, iOS 17+:
 
 ## Use
 
-Apply `floatingNav` to the `ScrollView` (or `List`) and pass your own nav view:
+Apply `floatingNav` to the `ScrollView` (or `List`). With no closure you get the placeholder icon bar (`FloatingNavPlaceholder`):
+
+```swift
+ScrollView { ... }
+    .floatingNav()
+```
+
+Pass a closure to use your own nav view instead:
 
 ```swift
 import FloatingNavKit
