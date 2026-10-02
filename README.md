@@ -14,7 +14,7 @@ It doesn't ship icons, items, selection state or styling. Bring any view you lik
 Swift Package Manager, iOS 17+:
 
 ```swift
-.package(url: "<your-repo-url>/FloatingNavKit", from: "0.1.0")
+.package(url: "https://github.com/themoyoabiodun/bottom-navigation-behaviour", from: "0.1.0")
 ```
 
 ## Use
